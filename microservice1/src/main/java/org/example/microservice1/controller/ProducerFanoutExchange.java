@@ -1,7 +1,7 @@
 package org.example.microservice1.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.microservice1.models.Message;
-import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,23 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class Producer {
-
+public class ProducerFanoutExchange {
     @Autowired
-    private RabbitTemplate rabbitTemplate;
-
+    private RabbitTemplate rabbitFanoutTemplate;
     @Autowired
-    private DirectExchange exchange;
-
-    @PostMapping("/direct-exchange-A")
+    private FanoutExchange fanoutExchange;
+    @PostMapping("/fanout-exchange")
     public String sendA(@RequestBody Message message){
-        rabbitTemplate.convertAndSend(exchange.getName(),"routing.A",message);
+        rabbitFanoutTemplate.convertAndSend(fanoutExchange.getName(),"",message);
         return "Message sent successfully !";
     }
-    @PostMapping("/direct-exchange-B")
-    public String sendB(@RequestBody Message message){
-        rabbitTemplate.convertAndSend(exchange.getName(),"routing.B",message);
-        return "Message sent successfully !";
-    }
-
 }

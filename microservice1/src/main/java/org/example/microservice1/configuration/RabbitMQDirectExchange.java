@@ -10,6 +10,7 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+// Route messages to a queue by matching a complete routing key
 @Configuration
 public class RabbitMQDirectExchange {
     public static final String ROUTING_A = "routing.A";
